@@ -1,0 +1,75 @@
+.app-bg{
+	/*  http://hf.jinyuhangxin.com/assets/home_img/bg.jpg */
+		/* http://down.lizhanqi.top/bg.webp */
+ background: linear-gradient(rgba(255, 255, 255, 0.6),
+  rgba(255, 255, 255, 0.6)),
+  url('http://hf.jinyuhangxin.com/assets/home_img/bg.jpg'); 
+  height:100%; padding:20rpx   ; 
+  width: 100%;
+  box-sizing:border-box; 
+  overflow: scroll;
+}
+.app-card{
+	background-color: rgba(255,255,255,0.6);
+	padding: 50rpx; 
+	overflow: scroll;
+	border-radius:5px;
+	text-align: ;
+}
+
+.status_bar {
+      height: var(--status-bar-height);
+      width: 100%;
+  }
+ .app-center-align{
+	 -webkit-justify-content: center;justify-content: center;
+/* 	 -webkit-align-items: center;align-items: center; */
+	 
+ }
+ .app-border{
+	 border: #007aff 1px solid;border-radius:5px;
+ }
+ .app-border-grey{
+ 	 border: #bebebe 1px solid;border-radius:5px;
+ }
+ /**
+  * 主题按钮
+  */
+ .app-theme-btn{
+	 margin-top: 25rpx;
+	 				padding: 5rpx 15rpx;
+	 				 border-radius:5px;
+	  color: #ffffff;
+	 	background-color: rgba(0, 122, 255, 0.8);
+	 margin-left: 25rpx; display: inline-flex; 
+ }
+
+ /**
+  * 未选中按钮
+  */
+ .app-unchecked-btn{
+ 	 margin-top: 25rpx;
+ 	 				padding: 5rpx 15rpx;
+ 	 				 border-radius:5px;
+ 	  color: #353535;
+ 	  	background-color: rgba(217, 216, 211, 0.5);
+ 	 margin-left: 25rpx; display: inline-flex; 
+ }
+ 
+ /**
+  * 正常按钮
+  */
+ .app-normal-btn{
+ 
+ } 
+ checkbox{
+	font-size: 35rpx; 
+ }
+ button{
+	 padding: 0rpx;
+font-size:30rpx;
+line-height: 100rpx; 
+				  color:  #FFFFFF; height: 100rpx;
+	 
+	 background-color: #007AFF;
+ }
