@@ -58,8 +58,7 @@
 <script>
 	export default {
 		onLoad(extra) { 
-				this.extra=extra;
-				console.log(extra) 
+				this.extra=extra; 
 				var api=	getApp().globalData.API;
 				uni.showLoading({
 					title:"加载中.."
@@ -69,11 +68,9 @@
 					 success: (res) => { 
 						 this.allCity = res.data
 						 this.matchCity=this.allCity
-						 console.log("共计"+JSON.stringify(this.matchCity[0])) 
-						 uni.hideLoading() 
+						  uni.hideLoading() 
 						 },
-					  	error: (e) => {
-					 	console.log("日志E"+e )
+					  	error: (e) => { 
 						uni.hideLoading()
 						}
 				})

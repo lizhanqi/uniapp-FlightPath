@@ -26,7 +26,7 @@
 			</view>
 				<!-- 起降地标题END -->	  
 				<!-- 航班号输入-->
-				<view  v-if="!isAddrss" class="uni-flex uni-row" style="border-bottom: #007AFF solid 1rpx; padding:20rpx 10rpx;">
+				<view  v-if="!isAddrss" class="uni-flex uni-row" style="border-bottom: #00AAFF solid 1rpx; padding:20rpx 10rpx;">
 					<image style="height: 40rpx; width: 40rpx; margin-right: 25rpx;" 
 					 src="../../static/f1.png"></image>
 					<input   placeholder="请输入航班号"></rich-text>
@@ -65,7 +65,7 @@
 					 style=" -webkit-flex: 1;flex: 1; ">
 						<image style=" height: 40rpx;
 						width:40rpx; margin-right: 25rpx;" 
-						src="../../static/f-12.png"></image> 
+						src="../../static/f2.png"></image> 
 						<text style="	
 						-webkit-flex: 1;flex: 1;
 						overflow: hidden !important;
@@ -80,16 +80,15 @@
 				 
 				<!-- 时间选择-->
 				<view class="uni-flex uni-row" 
-				style="border-bottom: #007AFF solid 1rpx; padding:20rpx 10rpx; 
+				style="border-bottom: #00AAFF solid 1rpx; padding:20rpx 10rpx; 
 				margin-top: 30rpx;">
 					<image style="height: 40rpx; width: 40rpx; margin-right: 25rpx;" src="../../static/select_date.png"></image>
 				 	<text @click="optDate" style="width: 100%;" >{{date}}</text>
 				</view>  
 				<!-- 按钮 -->
 				 <button @click="search()" style=" 
-				  margin-top: 50rpx; 
-				  
-				   width: 100%;"    >航班查询</button>
+				  margin-top: 50rpx;  
+				   width: 100%;">航班查询</button>
 	 
 	 </view> 
 	   <!-- cardEnd-->
@@ -104,10 +103,14 @@
 
 <script>
 import DateTimePicker from '@/components/bory-dateTimePicker/bory-dateTimePicker.vue'
+import util from '@/common/util.js'
+ 
     
+
  export default {
 	onLoad() {
-	  this.date = new Date().format("YYYY-mm-dd") 	
+	  this.date = new Date().format("YYYY-mm-dd") 
+		  this.loadDatas(56,20)
 	},
 	 components: {
 	     DateTimePicker
@@ -118,8 +121,10 @@ import DateTimePicker from '@/components/bory-dateTimePicker/bory-dateTimePicker
 				date:'请选日期',
 				isAddrss:true,
 				num:"",
-				"startLocation":"起飞地点",
-				"endLocation":"降落地点"
+		 "startLocationObj":{},
+		  "endLocationObj": {},
+		"startLocation":"起飞地点",
+		"endLocation":"降落地点"
 			}
 		},
 		computed: {
@@ -130,7 +135,7 @@ import DateTimePicker from '@/components/bory-dateTimePicker/bory-dateTimePicker
 		        };
 		    }
 		},
-		methods: { 
+		methods: {  
 		changeType(b){
 			this.isAddrss=b
 		},
@@ -138,30 +143,56 @@ import DateTimePicker from '@/components/bory-dateTimePicker/bory-dateTimePicker
         this.$refs['date-time'].show();
 	},	
  doConvert(){
-	 var tmp=this.startLocation 
+	 var tmp=this.startLocation
+ 	 var tmpLocationObj=this.startLocationObj
 	 console.log("降落："+this.endLocation+(this.endLocation=='降落地点') )
-	 
   if(this.endLocation=='降落地点' ){ 
 		 this.startLocation ='起飞地点' 
+		this.startLocationObj ={} 
 	 }else{
 		 this.startLocation =this.endLocation 
+	   this.startLocationObj =this.endLocationObj 
 	 } 
 	 console.log("起飞tmp："+tmp)
 	 
 	 if(tmp=='起飞地点' ){
 	   this.endLocation ='降落地点' 
+	      this.endLocationObj ={ }
 	 }else{
 	   this.endLocation =tmp
+	      this.endLocationObj =tmpLocationObj
 	 } 
  }, 
   
 		dateTimeChange(value) { 
 			this.date=value; 
 		    }	,
-			search(){
+			search(){ 
+				console.log('登录信息'+JSON.stringify(getApp().globalData.userInfor))
+				
+				if(this.startLocation=='起飞地点'){
+					uni.showToast({
+						icon:'none',
+						title:"请选择起飞地点"
+					})
+						return
+				 }
+				 if(this.endLocation=='降落地点'){
+				 	uni.showToast({
+						icon:'none',
+				 		title:"请选择目的地"
+				 	})
+					return
+				  }
+						 
 					this.navigateTo({
 						url:"../SearchList/SearchList", 
-						data:{"title":"降落地点" }
+						data:{
+							"startLocationObj":this.startLocationObj,
+							"endLocationObj":this.endLocationObj,
+							"date":this.date,
+							},
+						
 					})  
 				if(this.isAddrss){
 					
@@ -172,6 +203,7 @@ import DateTimePicker from '@/components/bory-dateTimePicker/bory-dateTimePicker
 			landingSite(){
 				var key="end"
 				uni.$once(key,(data)=>{ 
+					this.endLocationObj=data
 					if(data.cityNameCn){
 						this.endLocation=data.cityNameCn
 					}else{
@@ -186,6 +218,7 @@ import DateTimePicker from '@/components/bory-dateTimePicker/bory-dateTimePicker
 			placeOfDeparture(){
 			var 	key="start"
 			uni.$once(key,(data)=>{ 
+				this.startLocationObj=data
 				if(data.cityNameCn){
 					this.startLocation=data.cityNameCn
 				}else{
@@ -212,9 +245,9 @@ content: '';
 }
  
 .slecet{
- color: #007AFF;
+ color: #00AAFF;
  					margin-left: 20rpx; 
- border-bottom: #007AFF solid 4rpx; font-size: 30rpx;
+ border-bottom: #00AAFF solid 4rpx; font-size: 30rpx;
 }
 
 .unselect{
@@ -226,7 +259,7 @@ content: '';
 
 
 .boderpading{
-	border-bottom: #007AFF solid 1rpx;
+	border-bottom: #00AAFF solid 1rpx;
 	padding:20rpx 10rpx;
 }
 

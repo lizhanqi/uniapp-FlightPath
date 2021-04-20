@@ -33,7 +33,7 @@ function  assemble(url,parameter,key){
 	if(!tmpURL.startsWith('/')&&!tmpURL.startsWith('../')){
 		tmpURL='/'+tmpURL
 	}
-	 console.log('前往'+tmpURL)
+	 // console.log('前往'+tmpURL)
 	return tmpURL;
 }
  
@@ -126,4 +126,46 @@ Date.prototype.format = function(fmt) {
 		};
 	};
 	return fmt;
+}
+String.prototype.formatDuration = function() { 
+	let txt='--'
+	if (typeof this === 'undefined' || this == null || this === '') {
+	return txt
+	 }
+	try{
+		var  sum =parseInt(this);
+ 	  txt=  sum.formatDuration();
+	}catch(e){
+	 
+	}
+return txt 
+
+}
+/*
+分钟转换小时与天
+*/
+Number.prototype.formatDuration = function() {
+	var  sum =parseInt(this);
+		var m= sum%60;
+	var h  = (sum-m)/60;
+
+	var d =0
+	let oneday=60*24;
+	if(h>=24){ 
+	  d = (sum-(sum%oneday))/oneday; 
+	}  
+	if(d>0){
+	 sum =sum%oneday
+	 if(sum>0){
+		var  hm= sum.formatDuration()
+		 
+		return d+'天'+hm
+	}
+	 return d+'天' 
+	}else{ 
+		if(h>0){
+			return	h+'时'+m+'分'
+		}
+	return	 m+'分'
+	}  
 }

@@ -1,16 +1,22 @@
 <template>
 	<view    class="uni-flex uni-column app-bg" 
  
-		 > 
-		详情
+		 
 	</view>
 </template>
 
 <script>
 	export default {
+		onLoad(extra) { 
+			this.data=JSON.parse(extra.item);
+	 
+		},
+		
+		
+		
 		data() {
 			return {
-				
+				data:[]
 			}
 		},
 		methods: {

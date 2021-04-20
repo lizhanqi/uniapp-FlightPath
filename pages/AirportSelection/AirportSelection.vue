@@ -1,17 +1,19 @@
 <template>
 <!-- 背景 -->
 	<view    class="uni-flex uni-column app-bg"  >  
-		 <view  class="app-card" style="height: 100%;  ">
+		 <view  class="app-card " style="height: 100%;  ">
 			 <text style="font-size: 40rpx; ">{{decodeURIComponent(this.extra.title)}}</text>
 			 <!-- 搜索框-->
-			 <view class="uni-flex uni-row" style="border-bottom: #007AFF solid 1rpx;  padding:  5rpx;" > 
+			 <view class="uni-flex uni-row app-center-align"  
+			 style="border-bottom: #00AAFF solid 1rpx; 
+			  padding:  5rpx; -webkit-align-items: center;align-items: center;"  > 
 				<uni-icons type="search" size="20"></uni-icons>
-				<input placeholder="城市名/英文名/拼音"
+				<input   placeholder="城市名/英文名/拼音"
 				 style="margin-left: 5rpx; width: 100%;" @input="inputChange"></rich-text>
 			 </view>
 			 <!-- 搜索框END--> 
 			 <!-- 搜索内容-->
-			 <view   v-if="inSearch" >
+			 <view   >
 			 	<block   style="display:inline-flex;flex-wrap:wrap" v-for="(item, index) in matchCity" :key="index" >
 			   <text style="margin-top: 25rpx; 
 				padding: 5rpx 15rpx;
@@ -22,60 +24,72 @@
 			   "  @click="onItem(item)">{{item.cityNameCn?item.cityNameCn: item.cityName   }}   </text>
 				</block>
 			 </view>
-			<view>
-			
-			 
-			 
-			 </view>
+			<view> 
+	 </view>
 			 <!-- 搜索内容End-->
 			 <!-- 常用内容-->
-			 <view   >  
-	 
+		  <view class="   ">   
 		<!-- <text>历史搜索</text> -->
 		<!-- <view>
 			<block   style="display:flex;flex-wrap:wrap" v-for="a in 10" >
 				  <button style="margin-top: 25rpx; margin-left: 25rpx; display: inline-flex;  " >btn{{a}}</button>
 			</block>
-		</view> -->
-
-		
-			 
-		<text style="font-size: 40rpx; padding-top: 125rpx;">国内热门</text>
-		<view>
-							
+		</view> -->  
+		<text style="font-size: 40rpx; padding-top: 125rpx;">热门城市</text>
+		<view> 
+		<block   style="display:inline-flex;flex-wrap:wrap" v-for="(item, index) in hot[0]" 
+		  >
+		<text style="margin-top: 25rpx; 
+					padding: 5rpx 15rpx;
+					border-radius:5px;
+					color: #ffffff;
+					background-color: rgba(0, 170, 255, 0.8);
+		margin-left: 25rpx; display: inline-flex; 
+		"  @click="onHotItem(item)">{{ item  }}   </text>
+	  </block>
+	  </view>
+		<view> 				
 		</view>
-			 <text style="font-size: 40rpx; padding-top: 125rpx;">国外热门</text>
+			 <text style="font-size: 40rpx; padding-top: 125rpx; display: none;">国外热门</text>
 			 
 			 <view>
 			 					
 			 </view>
-
+				
 			 </view>
 			 		<!--常用end  -->
 		 </view>
 	</view>
 </template> 
-<script>
+<script> 
+		import hotJson from "@/static/json/hotspot.json"
 	export default {
 		onLoad(extra) { 
 				this.extra=extra;
 				console.log(extra) 
 				var api=	getApp().globalData.API;
+				console.log(getApp().globalData.allCitys.length)
+				if(getApp().globalData.allCitys.length==0){ 
 				uni.showLoading({
 					title:"加载中.."
-				})
+				}) 
 				api.send({
 					url:api.URLS.getCity,
 					 success: (res) => { 
-						 this.allCity = res.data
-						 console.log("共计"+Object.keys(this.allCity).length) 
+						 this.allCity = res.data 
+						 getApp().globalData.allCitys=this.allCity;
+							this.hot=hotJson
 						 uni.hideLoading() 
 						 },
-					  	error: (e) => {
-						 	console.log("日志E"+e )
+					  	error: (e) => { 
 						uni.hideLoading()
 						}
 				})
+				
+		 }else{
+			 	 this.allCity=getApp().globalData.allCitys;
+				 this.hot=hotJson
+		 }
 				
 		},
 		data() {
@@ -84,6 +98,7 @@
 				abroad:{},
 				allCity:[],
 				matchCity:[],
+				hot:[],
 				inSearch:false,
 				extra:{}
 				
@@ -96,14 +111,23 @@
 						this.inSearch=true;
 						this.matchInput(intputText)
 					}else{
+						this.matchCity=[]
 							this.inSearch=false;
 					} 
 				},
-			
+				onHotItem(item){
+					console.log(item)
+					this.allCity.forEach((d,i)=>{
+						if(d.cityNameCn==item){
+						 this.onItem(d)
+						 return
+						}
+					})
+				},
 				matchInput(text){  
 					var list=[];
-						var key =text .toLocaleUpperCase ();
-						uni.showLoading({
+					var key =text .toLocaleUpperCase ();
+					uni.showLoading({
 							title:"匹配中"
 						})
 					this.allCity.forEach(( item, index) => {
@@ -111,8 +135,7 @@
 						//  "cityName":"Zunyi",
 						//  "cityNameCn":"遵义",
 						//  "cityNamePinyin":"zunyi",
-						//  "cityNamePinyinShort":"ZY"
-							
+						//  "cityNamePinyinShort":"ZY" 
 						try
 						   { 
 								 var cityCode=	item.cityCode ;
@@ -132,8 +155,7 @@
 				 })
 				 this.matchCity=list;
 				 this.matchCity.reverse()
-				 uni.hideLoading()
-						 // console.log("匹配完毕"+Object.keys(list).length)
+				 uni.hideLoading() 
 				},
 					isMatch(source,key ){
 				if(source==null){

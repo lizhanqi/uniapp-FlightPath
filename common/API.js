@@ -14,7 +14,7 @@ var URLS = {
 	serviceType:'/api/Setting/getCarrierServiceType',//飞机类型
 	company:'/api/Setting/getCarrierName',//航空公司
 	model:"/api/Setting/getCarrierAircraftType",
-	searchDate:"/api/flight/searchDate",
+	searchDate:"/api/flight_mobile_all/search",
 	login:"/api/user/login",
 	loginOut:" /api/user/logout"
 	// 获取机型 /api/Setting/getCarrierAircraftType

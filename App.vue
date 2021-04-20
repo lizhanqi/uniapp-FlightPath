@@ -1,18 +1,20 @@
 <script>
 	import APIS from "@/common/API.js"
+	import ut  from "@/common/util.js"
 	export default {
-		onLaunch: function() {
-			console.log('App Launch')
-		},
-		onShow: function() {
-			console.log('App Show')
-		},
-		onHide: function() {
-			console.log('App Hide')
-		},
-		globalData: { 
+		globalData: {
 		  API :APIS, 
+		   allCitys :[], 
+		    userInfor :{}, 
+		},
+		onLaunch: function() {  
+			this.globalData.userInfor=uni.getStorageSync("userInfor")  
+				},
+		onShow: function() { 
+		},
+		onHide: function() { 
 		}
+
 	}
 </script>
 
@@ -23,6 +25,7 @@
 	
 	/* 以下样式用于 hello uni-app 演示所需 */
 	page {
+		
 		background-color: #f5f5f5;
 		height: 100%;
 		font-size: 28rpx;

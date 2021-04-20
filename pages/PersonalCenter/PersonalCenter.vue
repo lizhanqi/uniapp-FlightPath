@@ -4,13 +4,14 @@
 		
 		<view class="uni-flex uni-column">
 			<view class="uni-flex uni-row" style="padding: 50rpx; height: 150rpx;">
-				<image src="../../static/logo.png"
-				 style="width: 150rpx; height: 150rpx;"></image>
-				 <navigator :url="'/pages/Login/Login'">
+				<image :src="head"
+				 style="width: 150rpx; height: 150rpx; border-radius: 150rpx;"></image> 
+				 <navigator v-if="!userName"  :url="'/pages/Login/Login'">
 				<text  class="uni-flex" style="height: 100rpx;
 				color:#007AFF; margin: 50rpx  30rpx;"  >注册&登录</text>
-				  </navigator>
-			
+				</navigator>
+			<text  v-else class="uni-flex" style="height: 100rpx;
+			color:#007AFF; margin: 50rpx  30rpx;"  >{{userName}}</text>
 			</view> 
 			<uni-card class="uni-flex" style="height: 100%; 
 		 "> 
@@ -31,9 +32,20 @@
 
 <script>
 	export default {
+		onShow() { 
+			 
+			 this.userName= getApp().globalData.userInfor.nickname
+		 
+			if( !getApp().globalData.userInfor.avatar){
+			 this.head='../../static/head.png'
+			}else{
+			 this.head=getApp().globalData.userInfor.avatar
+			}
+		},
 		data() {
 			return {
-				
+				head:'../../static/head.png',
+				userName:""
 			}
 		},
 		methods: {

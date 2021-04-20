@@ -1,11 +1,26 @@
+/* #ifdef APP-PLUS */
 .app-bg{
 	/*  http://hf.jinyuhangxin.com/assets/home_img/bg.jpg */
-		/* http://down.lizhanqi.top/bg.webp */
+	/* http://down.lizhanqi.top/bg.webp */
  background: linear-gradient(rgba(255, 255, 255, 0.6),
   rgba(255, 255, 255, 0.6)),
+   url('@/static/bg.jpg');
+  height:100%; padding:20rpx   ; 
+  width: 100%; 
+  box-sizing:border-box; 
+  overflow: scroll;
+}
+/* #endif */
+.app-bg{
+	/*  http://hf.jinyuhangxin.com/assets/home_img/bg.jpg */
+	/* http://down.lizhanqi.top/bg.webp */
+  background: linear-gradient(rgba(255, 255, 255, 0.6),
+  rgba(255, 255, 255, 0.6)), 
+
   url('http://hf.jinyuhangxin.com/assets/home_img/bg.jpg'); 
   height:100%; padding:20rpx   ; 
   width: 100%;
+/*  background-size: 300%; */
   box-sizing:border-box; 
   overflow: scroll;
 }
@@ -14,7 +29,7 @@
 	padding: 50rpx; 
 	overflow: scroll;
 	border-radius:5px;
-	text-align: ;
+ 
 }
 
 .status_bar {
@@ -27,7 +42,7 @@
 	 
  }
  .app-border{
-	 border: #007aff 1px solid;border-radius:5px;
+	 border: #00AAFF 1px solid;border-radius:5px;
  }
  .app-border-grey{
  	 border: #bebebe 1px solid;border-radius:5px;
@@ -71,5 +86,8 @@ font-size:30rpx;
 line-height: 100rpx; 
 				  color:  #FFFFFF; height: 100rpx;
 	 
-	 background-color: #007AFF;
+	 background-color: #00AAFF;
+ }
+ .app-avg{
+	 
  }
