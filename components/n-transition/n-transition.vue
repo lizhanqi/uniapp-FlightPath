@@ -1,31 +1,23 @@
 <template>
-	<view class="container"   v-show="showMask">
-		
+	<view class="container" v-show="showMask">
 		<view class="mask" :style="{'opacity': maskVal}" @click="hide"></view>
-	
-		<view class="main" style="height: 90%; background-color:  rgba(255,255,255,1);" :style="{transform: `translateY(${transY}rpx)`,
-		'transition-timing-function': speed }" 
-		@transitionend="onTransitionend">
-		 <slot></slot>
+		<view class="main"  style="height: 90%; "> 
+		<slot></slot>
 		</view>
 	</view>
 </template>
 
 <script>
-	export default {
+	export default { 
 		/**
 		 *  @ speed [String] {运动曲线}
 		 *  @ height [Number] {弹框高度 单位：rpx}
 		 *  @ maskVal [Number] {蒙层透明度}
 		 */
-		props:{
-			speed:{
-				type:String,
-				default: 'cubic-bezier(0.68, -0.55, 0.27, 1.55)'
-			},
+		props:{ 
 			height: {
 				type:Number,
-				default: 500
+				default: 1080
 			},
 			maskVal:{
 				type: Number,
@@ -34,31 +26,21 @@
 		},
 		data () {
 			return {
-				showMask: false,
-				transY: this.height
+				showMask: false, 
 			}
 		},
 		methods: {
-			show (height) {
-				if(height){
-					this.height=height;
-				}
-				this.showMask = true
-				setTimeout(() => {
-					this.transY = 0
-				},17)
-				
+			show () { 
+				this.showMask = true  
 			},
-			hide () {
-				this.transY = 500
-			},
-			onTransitionend () {
-				if(!this.transY) return;
+			hide () { 
 				this.showMask = false
-			}
+			},
+		 
 		}
 	}
 </script>
+
 
 <style scoped lang="scss">
 .mask {

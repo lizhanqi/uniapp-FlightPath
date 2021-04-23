@@ -53,10 +53,10 @@
  .app-theme-btn{
 	 margin-top: 25rpx;
 	 				padding: 5rpx 15rpx;
-	 				 border-radius:5px;
+	 				 border-radius:3px;
 	  color: #ffffff;
 	 	background-color: rgba(0, 122, 255, 0.8);
-	 margin-left: 25rpx; display: inline-flex; 
+	 margin-right: 25rpx; display: inline-flex; 
  }
 
  /**
@@ -64,11 +64,12 @@
   */
  .app-unchecked-btn{
  	 margin-top: 25rpx;
+	 border: 1px solid  rgba(217, 216, 211,1);
  	 				padding: 5rpx 15rpx;
- 	 				 border-radius:5px;
+ 	 				 border-radius:3px;
  	  color: #353535;
  	  	background-color: rgba(217, 216, 211, 0.5);
- 	 margin-left: 25rpx; display: inline-flex; 
+ 	 margin-right: 25rpx; display: inline-flex; 
  }
  
  /**

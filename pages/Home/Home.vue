@@ -1,15 +1,24 @@
 <template> 
 	<!-- 背景 -->
-	<view    class="uni-flex uni-column app-bg app-center-align" 
-		style=" padding: 100rpx 50rpx 0rpx 50rpx ; " 
+	<view    class="uni-flex uni-column app-bg app-center-align center" 
+		style=" padding: 100rpx 50rpx 0rpx 50rpx ; "  
 		 > 
 		 
    <date-time-picker ref='date-time' :indicatorStyle='indicatorStyle' :type='type'   @change='dateTimeChange'></date-time-picker>
+	<view class="center uni-flex gradcent"  style="margin-bottom: 50rpx;">  
+		<image  
+		class="center"
+		src="../../static/logo.png" style="width: 150rpx; height: 150rpx;  border-radius:20rpx;"></image>
+		
+	</view>
+		
 		 <!-- 模拟card-->
 		<view  
 		  class="uni-flex uni-column app-card"   > 
+		<view class="center">
+		 </view>
 		 <!-- 航班号标题-->
-		 <view v-if="!isAddrss" class="uni-flex uni-row">
+		 <view v-if="!isAddrss" class="uni-flex uni-row"> 
 			<view class="uni-flex uni-column"> 
 		 	 		 <text class="slecet"  >按航班号</text>
 					 </view>
@@ -19,7 +28,7 @@
 		<!-- 航班号标题End--> 
 			<!-- 起降地标题 -->	
 			<view v-if="isAddrss" class="uni-flex uni-row">
-				<text class="unselect" @click="changeType(false)">按航班号</text>
+				<text class="unselect" @click="changeType(false) ">按航班号</text>
 				<view class="uni-flex uni-column"> 
 				  <text class="slecet"  >按起降地</text> 	 
 				</view> 
@@ -29,12 +38,9 @@
 				<view  v-if="!isAddrss" class="uni-flex uni-row" style="border-bottom: #00AAFF solid 1rpx; padding:20rpx 10rpx;">
 					<image style="height: 40rpx; width: 40rpx; margin-right: 25rpx;" 
 					 src="../../static/f1.png"></image>
-					<input   placeholder="请输入航班号"></rich-text>
+					<input @input="vinInput"  value="flightNo"  v-model="flightNo" placeholder="请输入航班号"></rich-text>
 				</view> 
-				<!-- 航班号输入End-->
-				
-				 
-				
+				<!-- 航班号输入End--> 
 				
 				<!-- 起降地 -->
 				<view   v-if="isAddrss" class="uni-flex uni-row" 
@@ -43,8 +49,8 @@
 					<!-- 起飞 -->
 					<view @click="placeOfDeparture"   class="uni-flex uni-row boderpading"
 					 style="-webkit-flex: 1;flex: 1; ">
-					 						<image style=" height: 40rpx;
-					 						width:40rpx; margin-right: 25rpx;" 
+					 						<image style=" height: 50rpx;
+					 						width:50rpx; margin-right: 25rpx;" 
 					 						src="../../static/f1.png"></image> 
 					 						<text style="	
 					 						-webkit-flex: 1;flex: 1;
@@ -58,13 +64,13 @@
 					<!-- 切换 -->
 					<image src="../../static/change.png" @click="doConvert"
 					style=" display: flex; align-items: center;
-					width: 40rpx; height: 40rpx; padding: 30rpx;"  />  
+					width: 50rpx; height: 50rpx; padding: 30rpx;"  />  
 					<!-- 降落 -->
 					<view @click="landingSite()"
 					 class="uni-flex uni-row boderpading"
 					 style=" -webkit-flex: 1;flex: 1; ">
-						<image style=" height: 40rpx;
-						width:40rpx; margin-right: 25rpx;" 
+						<image style=" height: 50rpx;
+						width:50rpx; margin-right: 25rpx;" 
 						src="../../static/f2.png"></image> 
 						<text style="	
 						-webkit-flex: 1;flex: 1;
@@ -82,21 +88,21 @@
 				<view class="uni-flex uni-row" 
 				style="border-bottom: #00AAFF solid 1rpx; padding:20rpx 10rpx; 
 				margin-top: 30rpx;">
-					<image style="height: 40rpx; width: 40rpx; margin-right: 25rpx;" src="../../static/select_date.png"></image>
-				 	<text @click="optDate" style="width: 100%;" >{{date}}</text>
+					<image style="height: 50rpx; width: 50rpx; margin-right: 25rpx;" src="../../static/select_date.png"></image>
+<!-- 	 	 	<text @click="optDate" style="width: 100%;" >{{date}}</text> 	 --> 
+					<picker style="width: 100%; " mode="date" :value="date"  @change="bindDateChange">
+						<view  style="width: 100%; background-color: rgba(255,255,255,0);">{{date}}</view>
+					</picker> 
 				</view>  
 				<!-- 按钮 -->
 				 <button @click="search()" style=" 
-				  margin-top: 50rpx;  
+				  margin-top: 50rpx;  font-size: 40rpx;
 				   width: 100%;">航班查询</button>
 	 
 	 </view> 
 	   <!-- cardEnd-->
-		<view class="uni-flex uni-column">
-
-		</view>
-	
-	
+		<view class="uni-flex uni-column"> 
+		</view> 
   </view>  
   <!-- 背景--> 
 </template>
@@ -109,8 +115,7 @@ import util from '@/common/util.js'
 
  export default {
 	onLoad() {
-	  this.date = new Date().format("YYYY-mm-dd") 
-		  this.loadDatas(56,20)
+	  this.date = new Date().format("YYYY-mm-dd")  
 	},
 	 components: {
 	     DateTimePicker
@@ -122,6 +127,7 @@ import util from '@/common/util.js'
 				isAddrss:true,
 				num:"",
 		 "startLocationObj":{},
+		 flightNo:"",
 		  "endLocationObj": {},
 		"startLocation":"起飞地点",
 		"endLocation":"降落地点"
@@ -139,9 +145,23 @@ import util from '@/common/util.js'
 		changeType(b){
 			this.isAddrss=b
 		},
-	optDate(){
+	optDate(){ 
         this.$refs['date-time'].show();
 	},	
+	
+	// 过滤vin输入
+	vinInput(e) {
+		let val = e.detail.value;
+		if (/[^a-zA-Z0-9]/g.test(val)) { // 先过滤不需要的字符，只保留数字和字母
+			val = val.replace(/[^a-zA-Z0-9]/g, '');
+		}
+		
+		if (!/^[A-Z\d]+$/.test(val)) {// 再进行转换，小写转为大写
+			val = val.toUpperCase();
+		}
+		this.flightNo = val; //这里对应的是value绑定的变量
+		return val; // 最后输出值，要保证输入框的值和value绑定的值一致
+	}, 
  doConvert(){
 	 var tmp=this.startLocation
  	 var tmpLocationObj=this.startLocationObj
@@ -152,8 +172,7 @@ import util from '@/common/util.js'
 	 }else{
 		 this.startLocation =this.endLocation 
 	   this.startLocationObj =this.endLocationObj 
-	 } 
-	 console.log("起飞tmp："+tmp)
+	 }  
 	 
 	 if(tmp=='起飞地点' ){
 	   this.endLocation ='降落地点' 
@@ -162,14 +181,15 @@ import util from '@/common/util.js'
 	   this.endLocation =tmp
 	      this.endLocationObj =tmpLocationObj
 	 } 
- }, 
+ }, 		bindDateChange: function(e) {
+				this.date = e.detail.value
+			},
   
-		dateTimeChange(value) { 
+		dateTimeChange(value) {  
 			this.date=value; 
 		    }	,
 			search(){ 
-				console.log('登录信息'+JSON.stringify(getApp().globalData.userInfor))
-				
+			 if(this.isAddrss){   
 				if(this.startLocation=='起飞地点'){
 					uni.showToast({
 						icon:'none',
@@ -183,8 +203,7 @@ import util from '@/common/util.js'
 				 		title:"请选择目的地"
 				 	})
 					return
-				  }
-						 
+				  } 
 					this.navigateTo({
 						url:"../SearchList/SearchList", 
 						data:{
@@ -194,9 +213,22 @@ import util from '@/common/util.js'
 							},
 						
 					})  
-				if(this.isAddrss){
+		
 					
 				}else{
+					
+					if(!this.flightNo){
+						uni.showToast({
+							title:"请输入航班号"
+						})
+					}else{
+						this.navigateTo({ 
+							url:"../Details/Details",
+							data:{flightNo:this.flightNo,	"date":this.date}
+						})
+			
+							
+					}
 						
 				}
 			}	,
@@ -246,8 +278,8 @@ content: '';
  
 .slecet{
  color: #00AAFF;
- 					margin-left: 20rpx; 
- border-bottom: #00AAFF solid 4rpx; font-size: 30rpx;
+ margin-left: 20rpx; 
+ border-bottom: #00AAFF solid 4rpx; font-size: 40rpx;
 }
 
 .unselect{
@@ -262,5 +294,5 @@ content: '';
 	border-bottom: #00AAFF solid 1rpx;
 	padding:20rpx 10rpx;
 }
-
+view{font-size: 35rpx;}
 </style>

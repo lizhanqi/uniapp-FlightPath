@@ -35,7 +35,7 @@
 				  <button style="margin-top: 25rpx; margin-left: 25rpx; display: inline-flex;  " >btn{{a}}</button>
 			</block>
 		</view> -->  
-		<text style="font-size: 40rpx; padding-top: 125rpx;">热门城市</text>
+		<text style="font-size: 40rpx; margin-top: 125rpx;">热门城市</text>
 		<view> 
 		<block   style="display:inline-flex;flex-wrap:wrap" v-for="(item, index) in hot[0]" 
 		  >
@@ -65,32 +65,8 @@
 		import hotJson from "@/static/json/hotspot.json"
 	export default {
 		onLoad(extra) { 
-				this.extra=extra;
-				console.log(extra) 
-				var api=	getApp().globalData.API;
-				console.log(getApp().globalData.allCitys.length)
-				if(getApp().globalData.allCitys.length==0){ 
-				uni.showLoading({
-					title:"加载中.."
-				}) 
-				api.send({
-					url:api.URLS.getCity,
-					 success: (res) => { 
-						 this.allCity = res.data 
-						 getApp().globalData.allCitys=this.allCity;
-							this.hot=hotJson
-						 uni.hideLoading() 
-						 },
-					  	error: (e) => { 
-						uni.hideLoading()
-						}
-				})
-				
-		 }else{
-			 	 this.allCity=getApp().globalData.allCitys;
-				 this.hot=hotJson
-		 }
-				
+				this.extra=extra; 
+				this.loadData()
 		},
 		data() {
 			return {
@@ -105,6 +81,51 @@
 			}
 		},
 		methods: {
+			loadData(){
+				console.log(this.extra)
+								var api=	getApp().globalData.API;
+								console.log(getApp().globalData.allCitys.length)
+								if(getApp().globalData.allCitys.length==0){ 
+								uni.showLoading({
+									title:"加载中.."
+								}) 
+								api.send({
+									url:api.URLS.getCity,
+									 success: (res) => {  
+										this.allCity=[]
+										 res.data.forEach((item)=>{
+											  if(item.cityCode){
+												     this.allCity.push(item) 
+											  }
+										  })
+											console.log("过滤前"+ res.data.length+"过滤后"+this.allCity.length)
+										 getApp().globalData.allCitys=this.allCity;
+											this.hot=hotJson
+										 uni.hideLoading() 
+										 },
+									  	error: (e) => { 
+											uni.hideLoading()
+										uni.showModal({
+										    title: '数据加载失败',
+										    content:e, 
+											cancelText:"退出",
+											confirmText:"重试", 
+										    success:   (res)=> {
+										        if (res.confirm) {
+														this.loadData()		
+										        } else if (res.cancel) {
+										           			uni.navigateBack()
+										        }
+										    }
+										}); 
+										}
+								})
+								
+				}else{
+							 	 this.allCity=getApp().globalData.allCitys;
+								 this.hot=hotJson
+				}						
+			},
 				inputChange(e){
 					var intputText=e.detail.value; 
 					if(Object.keys(intputText).length >0){
@@ -115,8 +136,7 @@
 							this.inSearch=false;
 					} 
 				},
-				onHotItem(item){
-					console.log(item)
+				onHotItem(item){ 
 					this.allCity.forEach((d,i)=>{
 						if(d.cityNameCn==item){
 						 this.onItem(d)
@@ -126,10 +146,7 @@
 				},
 				matchInput(text){  
 					var list=[];
-					var key =text .toLocaleUpperCase ();
-					uni.showLoading({
-							title:"匹配中"
-						})
+					var key =text .toLocaleUpperCase (); 
 					this.allCity.forEach(( item, index) => {
 						// "cityCode":"ZYI",
 						//  "cityName":"Zunyi",
@@ -154,27 +171,23 @@
 				  }	catch(err) {   } 
 				 })
 				 this.matchCity=list;
-				 this.matchCity.reverse()
-				 uni.hideLoading() 
+				 this.matchCity.reverse() 
+				 console.log(text+"结果："+JSON.stringify(this.matchCity))
 				},
-					isMatch(source,key ){
+				isMatch(source,key ){
 				if(source==null){
 				   return false
 				 } 
 			  return source.toLocaleUpperCase().search(key.toLocaleUpperCase()) != -1
 		 	},
-			onItem(item){ 
-				uni.$emit( decodeURIComponent(this.extra.callBackTag) , item)
-			 uni.navigateBack();
-
-			}
-			
-			
+			onItem(item){ 	 
+			 uni.$emit( decodeURIComponent(this.extra.callBackTag) , item)
+			 uni.navigateBack(); 
+			} 
 			 
 		}
 	}
-</script>
-
+</script> 
 <style>
 
 </style>

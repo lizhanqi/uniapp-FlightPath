@@ -64,7 +64,7 @@ function send(request) {
 		success: res => {
 			let statusCode= res.statusCode 
 			var data = res.data; 
-//		console.log(statusCode+"请求结果: " + JSON.stringify(res)); 
+			// console.log(statusCode+"请求结果: " + JSON.stringify(res)); 
 			if (data.code == 200 || data.Code == 200|| data.Code == 1|| data.code == 1|| data.code == 0|| data.Code == 0) {
 				request.success(data,res);
 			} else {
@@ -91,8 +91,7 @@ function send(request) {
 					 }else if(data.Code){
 					 errorDetails.code=data.Code  
 					 } 
-					 request.error(msg,errorDetails)
-					 
+					 request.error(msg,errorDetails) 
 				} else{
 					uni.showToast({title:msg,icon:"none"})
 				} 

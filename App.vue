@@ -9,7 +9,7 @@
 		},
 		onLaunch: function() {  
 			this.globalData.userInfor=uni.getStorageSync("userInfor")  
-				},
+			},
 		onShow: function() { 
 		},
 		onHide: function() { 

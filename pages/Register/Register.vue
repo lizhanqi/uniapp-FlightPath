@@ -5,29 +5,6 @@
  
  	<view class="app-card"  style="
 	flex: 1;-webkit-flex: 1;  padding: 30rpx;" >
-	
-	
-	<!-- 航班号标题-->
-	 <view v-if="!isAddrss" class="uni-flex uni-row"> 
-		<view class="uni-flex uni-column"> 
-	 	 		 <text class="slecet"  >账号密码</text>
-				 </view>
-	 			 <text class="unselect" @click="changeType(true)"
-	 			  style=" margin-left: 50rpx; font-size: 20rpx;">短信登录</text>	 
-	 </view> 
-	<!-- 航班号标题End--> 
-		<!-- 起降地标题 -->	
-		<view v-if="isAddrss" class="uni-flex uni-row">
-			<text class="unselect" @click="changeType(false) ">账号密码</text>
-			<view class="uni-flex uni-column"> 
-			  <text class="slecet"  >短信登录</text> 	 
-			</view> 
-		</view>
-			<!-- 起降地标题END -->	  
-	
-	
-	
-	
 	  <view style="margin-top: 30rpx;" class="app-border-grey">
 		 <uni-easyinput     
  		 :inputBorder="true" type="text"   placeholder="登录用户名/手机号" v-model="uName"/>
@@ -38,8 +15,6 @@
 		 v-model="pwd" 	placeholder="用户密码"/> 
  	 	</view>
 		<button v-on:click="login" style="margin-top: 40rpx; background-color: #00aaff;"type="primary">登录</button> 
-   
-		<view style="margin-top: 30rpx;">注册</view>
    </view>
   
  	</view>
@@ -59,7 +34,6 @@
  		},
 		data() {
 			return {
-				isAddrss:true,
 		extra:{},
 		 uName:"",
 		 pwd:""
@@ -67,9 +41,6 @@
 		},
 		
   methods: {    
-	  changeType(b){
-	  	this.isAddrss=b
-	  },
 	login(){ 
 		// ut.setHistory("wb")
 		// console.log('保存历史'+JSON.stringify(ut.getHistory()))
@@ -111,7 +82,8 @@
 				 uni.reLaunch({
 				 	url:"../Home/Home"
 				 })
-			 } 
+			 }
+			 
 	 		 },
 	 	  	error: (e) => {  
 				uni.hideLoading()
@@ -124,13 +96,6 @@
   }
  }
 </script> 
-<style>  .slecet{
- color: #00AAFF;
- 					margin-left: 20rpx; 
- border-bottom: #00AAFF solid 4rpx; font-size: 30rpx;
-}
-
-.unselect{
-	padding: 30rpx; font-size: 20rpx;
-}
+<style>  
+ 
 </style>

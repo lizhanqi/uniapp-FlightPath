@@ -7,7 +7,7 @@
  * error:失败回调
  */ 
 import http from "@/common/Http.js"; 
-var baseUrl = "https://test.jinyuhangxin.com";
+var baseUrl = "https://abc.jinyuhangxin.com";
 //getcity /searchDate  1机场2城市  dateType 1 出发到达类型2
 var URLS = { 
 	getCity: '/api/Setting/getCity' ,//城市
@@ -16,7 +16,8 @@ var URLS = {
 	model:"/api/Setting/getCarrierAircraftType",
 	searchDate:"/api/flight_mobile_all/search",
 	login:"/api/user/login",
-	loginOut:" /api/user/logout"
+	loginOut:" /api/user/logout",
+	 freeBack:"/api/user/userNeed"
 	// 获取机型 /api/Setting/getCarrierAircraftType
 } 
 
