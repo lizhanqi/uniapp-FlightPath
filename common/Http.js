@@ -75,3 +75,11 @@
 	});
 }
  
+//这种是js
+export default {
+	send: send, 
+}
+//这种为vue 使用
+module.exports = {
+	send: send, 
+}

@@ -167,71 +167,102 @@
 				<view class="uni-flex uni-column" style="padding: 0;  
 				height: calc(100% - 100rpx);overflow: auto; ">
 					<!-- 这里需要修改-----需要滑动 -->
-			 <view    style="padding:30rpx;"> 
-				<view class="optrow" >
-					 <view  class="optrow "> 
-							飞行区域： 
+		
+		
+		<!-- #ifndef APP-PLUS -->
+		 	 <view    style="padding:30rpx; height: 100%;"> 
+		<!-- #endif -->
+			<!-- #ifdef APP-PLUS -->
+			<scroll-view  scroll-y="true"  style="padding:30rpx; height: 100%;"> 
+
+			<!-- #endif -->
+		
+		
+		
+		
+		
+		
+		<view class="optrow" >
+							 <view  class="optrow "> 
+									飞行区域： 
+								 
+						 <uni-data-checkbox  multiple 
 						 
-				 <uni-data-checkbox  multiple 
+						 min="1" max="2"
+						 mode="button" selectedColor="#00aaff"
+						 v-model="regioned" :localdata="region" ></uni-data-checkbox>  
+						 </view>   
+						<!-- 宽窄-->
+						<view  class="optrow "> 
+						飞机机型： 
+						<uni-data-checkbox multiple  
+		mode="button" selectedColor="#00aaff"
+						v-model="widthTypeCheked" :localdata="widthType" ></uni-data-checkbox> 
+						</view>  
+						<!-- 宽窄End --> 
+						<!-- 直飞经停-->
+						<view  class=" optrow "> 	
+							  直飞经停： 
+							 <uni-data-checkbox  
+							 multiple   
+							   mode="button" selectedColor="#00aaff"
+							 v-model="directed" :localdata="direct" ></uni-data-checkbox>  
+						 </view>   
+						<!-- 直飞经停End --> 
+						<!-- 同航司-->
+						 	<view  class="uni-flex uni-column optrow "> 	
+						   中转类型：  
+							<uni-data-checkbox multiple selectedColor="#00aaff" mode="button"
+							 v-model="sameCompanyChecked" :localdata="sameCompany"></uni-data-checkbox>
+						 
+							
+							</view>  
+						<!-- 同航司End -->  
+							
+								<!-- 类型end -->  
+								<!-- 服务类型 -->
+								<view class="optrow uni-column " style="
+								-webkit-align-items: center;align-items: center; display: none;">
+									<text>	服务类型: </text>
+									<radio-group class="center" >  
+									<radio
+									:checked="item.selected"
+									 @click="onClickServiceType(item,index)" 
+									  class="optrow app-checkbox  " 
+									  v-for="(item,index) in serviceType"     >
+									 {{item.serviceTypeCn}}</radio> 
+								 	</radio-group>  
+								</view>
+								<!-- 服务类型End -->  
+								<!-- 航司-->
+										<view class="   optrow"   >
+										航司：
+									 <view style="margin-right: 40rpx;" > 
+								 	<text v-bind:class=" item.selected?'app-theme-btn':'app-unchecked-btn' "  
+									  v-for="(item,index) in showAirlines" @click="onClickAirlines(item,index)"    >
+								 {{item.name}}</text>   
+										</view> 
+									</view> 
+									<!-- 航司End -->
+							</view>
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		<!-- #ifndef APP-PLUS -->
+		 </view>
+		<!-- #endif -->
+			<!-- #ifdef APP-PLUS -->
+					 </scroll-view> 
+			<!-- #endif -->
 				 
-				 min="1" max="2"
-				 mode="button" selectedColor="#00aaff"
-				 v-model="regioned" :localdata="region" ></uni-data-checkbox>  
-				 </view>   
-				<!-- 宽窄-->
-				<view  class="optrow "> 
-				飞机机型： 
-				<uni-data-checkbox multiple  
- mode="button" selectedColor="#00aaff"
-				v-model="widthTypeCheked" :localdata="widthType" ></uni-data-checkbox> 
-				</view>  
-				<!-- 宽窄End --> 
-				<!-- 直飞经停-->
-				<view  class=" optrow "> 	
-					  直飞经停： 
-					 <uni-data-checkbox  
-					 multiple   
-					   mode="button" selectedColor="#00aaff"
-					 v-model="directed" :localdata="direct" ></uni-data-checkbox>  
-				 </view>   
-				<!-- 直飞经停End --> 
-				<!-- 同航司-->
-				 	<view  class="uni-flex uni-column optrow "> 	
-				   中转类型：  
-					<uni-data-checkbox multiple selectedColor="#00aaff" mode="button"
-					 v-model="sameCompanyChecked" :localdata="sameCompany"></uni-data-checkbox>
 				 
-					
-					</view>  
-				<!-- 同航司End -->  
-					
-						<!-- 类型end -->  
-						<!-- 服务类型 -->
-						<view class="optrow uni-column " style="
-						-webkit-align-items: center;align-items: center; display: none;">
-							<text>	服务类型: </text>
-							<radio-group class="center" >  
-							<radio
-							:checked="item.selected"
-							 @click="onClickServiceType(item,index)" 
-							  class="optrow app-checkbox  " 
-							  v-for="(item,index) in serviceType"     >
-							 {{item.serviceTypeCn}}</radio> 
-						 	</radio-group>  
-						</view>
-						<!-- 服务类型End -->  
-						<!-- 航司-->
-								<view class="   optrow"   >
-								航司：
-							 <view style="margin-right: 40rpx;" > 
-						 	<text v-bind:class=" item.selected?'app-theme-btn':'app-unchecked-btn' "  
-							  v-for="(item,index) in showAirlines" @click="onClickAirlines(item,index)"    >
-						 {{item.name}}</text>   
-								</view> 
-							</view> 
-							<!-- 航司End -->
-					</view>
-				 </view>
 				</view>  
 					<!-- button 需要固定 -->
 					<view class="uni-flex uni-mask-btn" style="padding: 15rpx;-webkit-justify-content: space-between;
