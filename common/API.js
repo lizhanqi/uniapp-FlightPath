@@ -17,7 +17,9 @@ var URLS = {
 	searchDate:"/api/flight_mobile_all/search",
 	login:"/api/user/login",
 	loginOut:" /api/user/logout",
-	 freeBack:"/api/user/userNeed"
+	 freeBack:"/api/user/userNeed",
+	 	 sendSMS:"/api/sms/send",
+	smsLogin:"/api/user/mobilelogin"
 	// 获取机型 /api/Setting/getCarrierAircraftType
 } 
 

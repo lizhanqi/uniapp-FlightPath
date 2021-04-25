@@ -1,13 +1,14 @@
  <template> 
- 		<view    style="display: flex; 
+ 		<view    style="display: flex;
+		   
 		 height: 100%; width: 100%; 
 		flex-direction: row; "> 
 		 
 					
-		<view  style="   margin-left: 30rpx; padding: 0rpx 20rpx;  " class="cal-day-li" :class="{'cal-day-li-selected':item.timeSpan == baseData.selectedDate.timeSpan}"  >
+		<view  style="   margin-left: 30rpx; padding: 0rpx 20rpx;  " class="cal-day-li" >
  						  		<text  >{{cMonth}}</text>
- 						  				<text  style="margin-top: -10rpx;">月</text>  
- 							</view>		 
+ 						  		<text  style="margin-top: -10rpx;">月</text>  
+ 	 	</view>		 
 					
  			<swiper style="flex-grow:0;   height: 100%;   width: calc(100% - 80rpx);  " :current="current" ref="calSwiper"  :duration="200" circular @animationfinish="swiperFisnish">
  				<swiper-item style="height: 100%;  " v-for="(days,i) of weeks" :key="i">
@@ -110,8 +111,7 @@
 		},
 		mounted() { 
 			this.propDate = this.defaultDate == 0 ? new Date() : new Date(this.defaultDate);
-		 this.cMonth=(this.propDate.getMonth()+1)
-		console.log(this.propDate.format("YYYY-mm-dd"))
+		 this.cMonth=(this.propDate.getMonth()+1) 
 			this.initData();
 		},
 		methods: { 

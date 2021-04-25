@@ -8,10 +8,9 @@
 	<view class="center uni-flex gradcent"  style="margin-bottom: 50rpx;">  
 		<image  
 		class="center"
-		src="../../static/logo.png" style="width: 150rpx; height: 150rpx;  border-radius:20rpx;"></image>
+		src="../../static/logo.png" style="display: none;  width: 150rpx; height: 150rpx;  border-radius:20rpx;"></image>
 		
-	</view>
-		
+	</view> 
 		 <!-- 模拟card-->
 		<view  
 		  class="uni-flex uni-column app-card"   > 
@@ -23,7 +22,7 @@
 		 	 		 <text class="slecet"  >按航班号</text>
 					 </view>
 		 			 <text class="unselect" @click="changeType(true)"
-		 			  style=" margin-left: 50rpx; font-size: 20rpx;">按起降地</text>	 
+		 			  style=" margin-left: 50rpx;   ">按起降地</text>	 
 		 </view> 
 		<!-- 航班号标题End--> 
 			<!-- 起降地标题 -->	
@@ -96,7 +95,7 @@
 				</view>  
 				<!-- 按钮 -->
 				 <button @click="search()" style=" 
-				  margin-top: 50rpx;  font-size: 40rpx;
+				  margin-top: 50rpx;  font-size: 38rpx;
 				   width: 100%;">航班查询</button>
 	 
 	 </view> 
@@ -115,7 +114,9 @@ import util from '@/common/util.js'
 
  export default {
 	onLoad() {
-	  this.date = new Date().format("YYYY-mm-dd")  
+	  this.date = new Date().format("YYYY-mm-dd") 
+	   this.loadData()
+	  console.log("日期-----------------"+this.date)
 	},
 	 components: {
 	     DateTimePicker
@@ -182,13 +183,39 @@ import util from '@/common/util.js'
 	      this.endLocationObj =tmpLocationObj
 	 } 
  }, 		bindDateChange: function(e) {
-				this.date = e.detail.value
+			
+				var starttoday =new Date(new Date().format("YYYY-mm-dd")).getTime() 
+				var eld =24*60*60*1000*7
+				var dt =	new Date( e.detail.value ).getTime()
+				if(dt<starttoday||dt>(starttoday+eld)){
+					uni.showModal({
+					    title: '日期不可用',
+					    content:'只能查询未来七日内数据', 
+						showCancel:false,
+						cancelText:"知道了",  
+					}); 
+				}else{
+						this.date = e.detail.value 
+				}
 			},
-  
+				
 		dateTimeChange(value) {  
 			this.date=value; 
 		    }	,
-			search(){ 
+			search(){
+				var starttoday =new Date(new Date().format("YYYY-mm-dd")).getTime()
+				
+				var eld =24*60*60*1000*7
+				var dt =	new Date(this.date).getTime() 
+				if(dt<starttoday||dt>(starttoday+eld)){
+					uni.showModal({
+					    title: '日期不可用',
+					    content:'只能查询未来七日内数据', 
+						showCancel:false,
+						cancelText:"知道了",  
+					}); 
+					return
+				}
 			 if(this.isAddrss){   
 				if(this.startLocation=='起飞地点'){
 					uni.showToast({
@@ -212,11 +239,8 @@ import util from '@/common/util.js'
 							"date":this.date,
 							},
 						
-					})  
-		
-					
-				}else{
-					
+					})    
+				}else{ 
 					if(!this.flightNo){
 						uni.showToast({
 							title:"请输入航班号"
@@ -225,9 +249,7 @@ import util from '@/common/util.js'
 						this.navigateTo({ 
 							url:"../Details/Details",
 							data:{flightNo:this.flightNo,	"date":this.date}
-						})
-			
-							
+						}) 
 					}
 						
 				}
@@ -261,7 +283,28 @@ import util from '@/common/util.js'
 				url:"../AirportSelection/AirportSelection", 
 				data:{"title":"起飞地点","callBackTag":key}
 			})
-			} 
+			} ,
+				loadData(){ 
+				var api=	getApp().globalData.API; 
+					if(getApp().globalData.allCitys.length==0){  
+								api.send({
+									url:api.URLS.getCity,
+									 success: (res) => {  
+										this.allCity=[]
+										 res.data.forEach((item)=>{
+											  if(item.cityCode){
+												     this.allCity.push(item) 
+											  }
+										  })
+										console.log("过滤前"+ res.data.length+"过滤后"+this.allCity.length)
+										 getApp().globalData.allCitys=this.allCity; 
+										 },
+									  	error: (e) => {  
+										}
+								})
+								
+				} 					
+			}
 		}
 	}
 </script>
@@ -283,7 +326,7 @@ content: '';
 }
 
 .unselect{
-	padding: 30rpx; font-size: 20rpx;
+	padding: 30rpx; font-size:40rpx;
 }
 .gradcent{
 	-webkit-justify-content: center;justify-content: center;-webkit-align-items: center;align-items: center;
@@ -294,5 +337,5 @@ content: '';
 	border-bottom: #00AAFF solid 1rpx;
 	padding:20rpx 10rpx;
 }
-view{font-size: 35rpx;}
+view{font-size: 32rpx;}
 </style>

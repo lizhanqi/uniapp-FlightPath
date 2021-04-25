@@ -16,17 +16,17 @@
 		 "> 
 					<view>   
 					 <navigator :url="'/pages/feedback/feedback'">    
-					<text style="font-size: 30rpx; padding: 25rpx; " >帮助反馈</text>
+					<text style="font-size: 36rpx; padding: 25rpx; " >帮助反馈</text>
 				 </navigator>
 
 				</view>	  
 					<view style="border-bottom: #6e6e6e solid; border-width:0.5px ;margin: 10rpx;  "></view>
 					<navigator :url="'/pages/about/about'">    
-					 <text style="font-size: 30rpx; padding: 25rpx;">关于我们</text>	
+					 <text style="font-size: 36rpx; padding: 25rpx;">关于我们</text>	
 					</navigator>
 			 </uni-card> 
 			 
-			 <button  v-if="!tologin"  @click="logOut" style="width: auto; margin: 30rpx; background-color: #00AAFF;">退出</button>
+			 <button  v-if="!tologin"  @click="logOut" style="font-size: 40rpx; width: auto; margin: 30rpx; background-color: #00AAFF;">退出</button>
 		</view> 
 	</view>
 </template>
@@ -50,8 +50,7 @@
 			if( getApp().globalData.userInfor.avatar){
 			 this.head=getApp().globalData.userInfor.avatar 
 			 this.tologin=false
-			}else{ 
-			
+			}else{  
 			 this.head='../../static/head.png'
 			 	this.tologin=true
 			}
@@ -72,5 +71,7 @@
 </script>
 
 <style>
-
+	view{
+		font-size: 40rpx;
+	}
 </style>

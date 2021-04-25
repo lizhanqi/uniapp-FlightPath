@@ -82,7 +82,7 @@
 		},
 		methods: {
 			loadData(){
-				console.log(this.extra)
+				 
 								var api=	getApp().globalData.API;
 								console.log(getApp().globalData.allCitys.length)
 								if(getApp().globalData.allCitys.length==0){ 

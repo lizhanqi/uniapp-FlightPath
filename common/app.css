@@ -15,8 +15,7 @@
 	/*  http://hf.jinyuhangxin.com/assets/home_img/bg.jpg */
 	/* http://down.lizhanqi.top/bg.webp */
   background: linear-gradient(rgba(255, 255, 255, 0.6),
-  rgba(255, 255, 255, 0.6)), 
-
+  rgba(255, 255, 255, 0.6)),  
   url('http://hf.jinyuhangxin.com/assets/home_img/bg.jpg'); 
   height:100%; padding:20rpx   ; 
   width: 100%;
@@ -51,11 +50,12 @@
   * 主题按钮
   */
  .app-theme-btn{
-	 margin-top: 25rpx;
-	 				padding: 5rpx 15rpx;
-	 				 border-radius:3px;
-	  color: #ffffff;
-	 	background-color: rgba(0, 122, 255, 0.8);
+	margin-top: 25rpx;
+	padding: 5rpx 15rpx;
+	border-radius:3px;
+	color: #ffffff;
+	 border: 1px solid  rgba(0, 122, 255, 0.8);
+	background-color: rgba(0, 122, 255, 0.8);
 	 margin-right: 25rpx; display: inline-flex; 
  }
 
@@ -64,11 +64,11 @@
   */
  .app-unchecked-btn{
  	 margin-top: 25rpx;
+	 padding: 5rpx 15rpx;
+	 border-radius:3px;
+	 color: #353535;
 	 border: 1px solid  rgba(217, 216, 211,1);
- 	 				padding: 5rpx 15rpx;
- 	 				 border-radius:3px;
- 	  color: #353535;
- 	  	background-color: rgba(217, 216, 211, 0.5);
+ 	 background-color: rgba(217, 216, 211, 0.5);
  	 margin-right: 25rpx; display: inline-flex; 
  }
  

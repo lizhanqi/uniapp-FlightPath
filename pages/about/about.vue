@@ -1,7 +1,7 @@
 <template>
 	<view class="app-bg ">
 	 <uni-card    :note='txt'  style="width: auto; "> 
-	 <text>金宇航信</text>
+	 <text style="font-size: 40rpx;">金宇航信</text>
 			<!-- <textarea auto-height='true' disabled='true' :value="txt">{{txt}}</textarea>
 	 -->
 		 </uni-card>

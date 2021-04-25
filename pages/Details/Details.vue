@@ -8,7 +8,7 @@
  				 <!-- 起飞机场信息-->
  				  <view class="uni-flex uni-column center" style="flex: 1; text-overflow:ellipsis;overflow:hidden;">
  					<view> 
-				  {{ 	new  Date(parseInt(data[0].localDepTimesStamp)*1000)  .format('mm-dd')}}  
+				  {{ 	new  Date((parseInt(data[0].localDepTimesStamp)+diffTime(data[0]))*1000)  .format('mm-dd')}}  
 				  	</view> 
  					{{  data[0].depCityName}} 
  				</view>
@@ -40,7 +40,7 @@
  				 <!-- 降落信息-->
  				 <view class="uni-flex uni-column center"style="flex: 1;"> 
 				 	<view> 
-				    {{ 	new  Date(parseInt(data[0].localArrTimesStamp)*1000)  .format('mm-dd')}}  
+				    {{ 	new  Date((parseInt(data[0].localArrTimesStamp)+diffTime(data[0]))*1000).format('mm-dd')}}  
 					 </view>
  				 	 {{  data[data.length-1].arrCityName}} 
  				 </view>
@@ -53,9 +53,10 @@
  			 style="-webkit-justify-content: space-between;
  			 justify-content: space-between; border-top: #aaaaaa solid 1rpx;padding:10rpx;"> 
  			  <text style="color: #00aaff;">
- 						总时长: {{ (((data[data.length-1].localArrTimesStamp-data[0].localDepTimesStamp)/60)).formatDuration() }}
+ 						总时长: {{ (((parseInt(data[data.length-1].localArrTimesStamp)+diffTime(data[data.length-1])-parseInt(data[0].localDepTimesStamp)-diffTime(data[0]))/60)).formatDuration() }}
  			  </text> 
- 			  <text 	v-if="data.length>1">中转时长：{{ (((data[data.length-1].localDepTimesStamp -data[0].localArrTimesStamp)/60)).formatDuration() }} </text>
+ 			  <text 	v-if="data.length>1">中转时长：{{ (((parseInt(data[data.length-1].localDepTimesStamp)+diffTime(data[data.length-1])
+			   -parseInt(data[0].localArrTimesStamp)-diffTime(data[0]))/60)).formatDuration() }} </text>
  			   <!-- 航空公司与总时长 end-->
  			 </view>
  			
@@ -94,7 +95,7 @@
 				
 					<!-- 飞行日期 -->
 					  <view>
-					   	{{ 	new  Date(parseInt(item.localDepTimesStamp)*1000)  .format('mm-dd')}}/{{ new  Date(parseInt(item.localArrTimesStamp)*1000)  .format('mm-dd')}}	  
+					   	{{ 	new  Date((parseInt(item.localDepTimesStamp))*1000)  .format('mm-dd')}}/{{ new  Date((parseInt(item.localArrTimesStamp))*1000)  .format('mm-dd')}}	  
 					  </view>   
 				  </view>
 				  
@@ -104,7 +105,7 @@
 	 					<view class="uni-flex uni-column center" style="flex: 1;">
 	 					<!-- 起飞时间 -->
 	 					<view style="font-size: 45rpx;">
-	 						{{ 	new  Date(parseInt(item.localDepTimesStamp)*1000)  .format('HH:MM')}}
+	 						{{ 	new  Date((parseInt(item.localDepTimesStamp))*1000)  .format('HH:MM')}}
 	 					 </view>
 	 					 <!-- 起飞时间End -->
 	 			 
@@ -122,7 +123,7 @@
 	 			 	 			text-overflow:ellipsis;
 	 			 	 			-webkit-box-orient: vertical; 
 	 			 	 			white-space:nowrap; ">
-	 			 {{ (((item.localArrTimesStamp-item.localDepTimesStamp)/60)).formatDuration() }} </text>
+	 			 {{ (((parseInt(item.localArrTimesStamp) -item.localDepTimesStamp)/60)).formatDuration() }} </text>
 	 			 </view>
 	 					<!--飞行时长end  -->  
 	 					<!-- 降落信息 -->
@@ -342,7 +343,19 @@
 			 tmpMap.forEach((value, key, self) => {
 			 this.tmpData.push(value)
 			 });  
-		 	},
+		 	},  
+			diffTime(item){
+				var days= Number(item.localArrDay)
+					  if(!days&&days!=0){
+						  days=-1
+					  }  
+			var oneday=24*60*60
+			 var	diff =oneday*days;
+			// console.log( days+"时间差"+diff)  
+				// console.log(   JSON.stringify(item )) 
+			// console.log(  days+"时间差"+diff+"前"+	item.localArrTimesStamp+"后来"+item.localArrTimesStamp+diff) 
+			return diff;
+			},
 				  
 				
 			

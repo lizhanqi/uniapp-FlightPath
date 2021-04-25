@@ -25,13 +25,14 @@
 					style="color: #00aaff; padding:3rpx 50rpx; 
 					border-radius: 50rpx;">中转</view>
 					<view  v-if="item.length>1" style="margin-top: 20rpx;">
-					{{ (((item[item.length-1].localArrTimesStamp-item[0].localDepTimesStamp)/60)).formatDuration() }} </view>
+					{{ (((Number(item[item.length-1].localDepTimesStamp)+diffTime(item[item.length-1])
+					-Number(item[0].localArrTimesStamp) -diffTime(item[0]))/60)).formatDuration() }} </view>
+					
 					</view>
 					<!--中转时间end  -->  
 					<!-- 降落信息 -->
 					<view class="uni-flex uni-column center" style="flex: 1;">
-					<!-- 结降落时间 -->
-					
+					<!-- 结降落时间 --> 
 					<view style="font-size: 45rpx;">
 									{{
 										new  Date(parseInt(item[item.length-1].localArrTimesStamp)*1000)  .format('HH:MM')
@@ -100,14 +101,20 @@
 			 class="uni-flex"
 			 style="-webkit-justify-content: space-between;
 			 justify-content: space-between; border-top: #aaaaaa solid 1rpx;padding:10rpx;"> 
-				 <view v-for="cItem in item">
+				 <view style="flex: 1;-webkit-flex: 1;" v-for="cItem in item">
 					  {{cItem.carrierName}} (
 					 <text style="color: #999999;">
 						  {{cItem.carrierCode}}{{cItem.flightNo}}
 					 </text>
 					 )
 				 </view>
-			  <text style="">{{ (((item[item.length-1].localArrTimesStamp-item[0].localDepTimesStamp)/60)).formatDuration() }} </text>
+			  <text style="width: 200rpx;  text-align: right;">{{ ((
+			  (Number(item[item.length-1].localArrTimesStamp) +diffTime(item[item.length-1]) 
+			  -Number(item[0].localDepTimesStamp) -diffTime(item[0])
+			  
+			  )/60)).formatDuration() }}
+	<!-- 		  {{	item[0].localArrDay +'---'+item[item.length-1].localArrDay}} -->
+			   </text>
 			   <!-- 航空公司与总时长 end-->
 			 </view>
 			
@@ -120,25 +127,18 @@
 	    <!-- 内容 end-->  
 	<!-- 顶部条件 需要固定-->
 	<view class="center head uni-flex"   >   
-			<chenmushan-week-calendar  :defaultDate="defaultDate" style="width: 640rpx; 
-		 
-			  height:120rpx;    	 "
+			<chenmushan-week-calendar  :defaultDate="defaultDate" style="width: 640rpx;  
+			  height:120rpx; padding-top: 5rpx; "
 			@changeDate="changeDate"   /> 
-			<view  class="uni-column  " @click="popUp()"
-			style=" height: 120rpx; display: flex; flex: 1;		padding-top: 15rpx; text-align: center;   align-items: center; ">
-				<image 
+			<view  class="uni-column    " @click="popUp()"
+			style=" height: 80rpx; display: flex; flex: 1;	
+			background-color: #f9d13c; border-radius: 0 0 10% 10%;
+				padding-top: 10rpx; text-align: center;   align-items: center; ">
+				<image  mode="aspectFit"
 				 src="../../static/more.png" 
-				style="height: 40rpx; width:40rpx; margin-top:15rpx;  " />
-				<text  style=" ">选项</text>
-			</view> 
-	 
-		<!-- 筛选 -->
-<!-- 		<view @click="popUp" class="center uni-flex uni-column" style="padding: 10rpx ;     ">
-			 <uni-icons type="list" size="20" style="padding:  0rpx;" /> 
-			 <text style="margin-top: -25rpx;">筛选</text>
-		</view> -->
-		 <!-- 筛选end -->   
-	
+				style="height:30rpx; width:30rpx;    " />
+				<text   >选项</text>
+			</view>  
 	  <!-- 靠右侧 display: flex;-->
 	 		 <view class="uni-flex  fillWith " 
 	 		 style="  display: none;  "  >
@@ -167,19 +167,20 @@
 				<view class="uni-flex uni-column" style="padding: 0;  
 				height: calc(100% - 100rpx);overflow: auto; ">
 					<!-- 这里需要修改-----需要滑动 -->
-			 <view    style="padding:30rpx;">
-				 
+			 <view    style="padding:30rpx;"> 
 				<view class="optrow" >
 					 <view  class="optrow "> 
-							飞行区域：
-				 <uni-data-checkbox multiple 
+							飞行区域： 
+						 
+				 <uni-data-checkbox  multiple 
+				 
+				 min="1" max="2"
 				 mode="button" selectedColor="#00aaff"
 				 v-model="regioned" :localdata="region" ></uni-data-checkbox>  
-				 </view>  
-				 
+				 </view>   
 				<!-- 宽窄-->
 				<view  class="optrow "> 
-				飞机机型 
+				飞机机型： 
 				<uni-data-checkbox multiple  
  mode="button" selectedColor="#00aaff"
 				v-model="widthTypeCheked" :localdata="widthType" ></uni-data-checkbox> 
@@ -188,20 +189,21 @@
 				<!-- 直飞经停-->
 				<view  class=" optrow "> 	
 					  直飞经停： 
-					 <uni-data-checkbox multiple
+					 <uni-data-checkbox  
+					 multiple   
 					   mode="button" selectedColor="#00aaff"
-					 v-model="directed" :localdata="direct" ></uni-data-checkbox> 
-				 </view>  
-				   
+					 v-model="directed" :localdata="direct" ></uni-data-checkbox>  
+				 </view>   
 				<!-- 直飞经停End --> 
 				<!-- 同航司-->
 				 	<view  class="uni-flex uni-column optrow "> 	
-				   中转类型： 
-					<uni-data-checkbox multiple 
-					 mode="button" selectedColor="#00aaff"
-					v-model="sameCompanyChecked" :localdata="sameCompany" ></uni-data-checkbox> 
+				   中转类型：  
+					<uni-data-checkbox multiple selectedColor="#00aaff" mode="button"
+					 v-model="sameCompanyChecked" :localdata="sameCompany"></uni-data-checkbox>
+				 
+					
 					</view>  
-				<!-- 同航司End --> 
+				<!-- 同航司End -->  
 					
 						<!-- 类型end -->  
 						<!-- 服务类型 -->
@@ -217,54 +219,7 @@
 							 {{item.serviceTypeCn}}</radio> 
 						 	</radio-group>  
 						</view>
-						<!-- 服务类型End --> 
-						<!-- 机型类型 -->
-				<!-- 		<view class="uni-flex   optrow center" style="display: none;" >
-						 机型: 
-				 		 <lb-picker style="flex:1; -webkit-flex: 1;
-						  margin: 0rpx 60rpx 0rpx 30rpx  ;" 
-						  @confirm="pickConfirm"    :list="aircraftModel"
-						     :dataset="{ name: 'aircraftModelName' }"
-						 >
-						 <view style="flex: 1;-webkit-flex: 1;width: 100%;
-						 padding: 0rpx 10rpx ; margin-right :40rpx  ; 
-						 "class="app-border">{{aircraftModelName}}</view>
-						 </lb-picker>  
-				<!--  	 <picker style="flex: 1;-webkit-flex: 1; width: 100%; margin-left: 10rpx;"
-						   @change="bindPickerChange" :value="index" :range="aircraftModel"
-							range-key="specificAircraftName">
-						 		<view   style="flex:1; -webkit-flex: 1; 
-								padding: 0rpx 10rpx ; margin-right :40rpx  ;  
-						 	  "class="app-border">{{aircraftModel[index].specificAircraftName}}</view>
-						 </picker> 
-						</view> -->
-						<!-- 机型End --> 
-					<!-- 起飞与到达时间 -->
-				<!-- 	<view class="uni-flex optrow" style="display:none;"> 
-					<view style="flex: 1; font-size: 35rpx;">	起飞时间：
-					<lb-picker @confirm="pickConfirm"    :list="timeslot"
-					    :dataset="{ name: 'startTimeslot' }"
-					><view style="flex: 1;-webkit-flex: 1;
-					padding: 0rpx 10rpx ; margin-right :40rpx  ; 
-					"class="app-border">{{startTimeslot}}</view>
-					</lb-picker> 
-					</view> 
-				 	<view style="flex: 1; font-size: 35rpx;  ">	落地时间：
-					<lb-picker @confirm="pickConfirm"    :list="timeslot"
-					    :dataset="{ name: 'endTimeslot' }"
-					>
-					<view style="flex: 1;-webkit-flex: 1;
-					padding: 0rpx 10rpx ; margin-right :40rpx  ; 
-					"class="app-border">{{endTimeslot}}</view>
-					</lb-picker> 
-					</view>
-					</view> -->
-						<!-- 起飞与到达时间End --> 
-	<!-- 					<view style="width: 100% ;display: none;   "  class="uni-flex optrow " @click="transitCityChange">
-							 中转城市: 
-							<text  style="border: #576B95 1px solid;flex: 1;-webkit-flex: 1; 
-							padding: 0rpx 15rpx ; margin-right :50rpx  ; border-radius:5px;   ">{{transitCity}}</text>
-						</view>     -->
+						<!-- 服务类型End -->  
 						<!-- 航司-->
 								<view class="   optrow"   >
 								航司：
@@ -281,11 +236,12 @@
 					<!-- button 需要固定 -->
 					<view class="uni-flex uni-mask-btn" style="padding: 15rpx;-webkit-justify-content: space-between;
 				justify-content: space-between;"  >
+				<button  type="warn" style="  width: 300rpx;
+				   margin-left: 0rpx 30rpx; font-size: 40rpx;"@tap="preBtn(true)"  >
+				   取消</button>
 						<button   style=" width: 300rpx;ackground-color: #00AAFF; 
-						font-size: 40rpx; " @tap="preBtn(false)" >确定</button>
-						<button  type="warn" style="  width: 300rpx;
-						   margin: 0rpx 30rpx; font-size: 40rpx;"@tap="preBtn(true)"  >
-						   取消</button>
+						font-size: 40rpx;  margin-right:50rpx; " @tap="preBtn(false)" >确定</button>
+					
 					</view> 
 			</n-transition> 
 				<!-- 弹窗end -->
@@ -300,8 +256,7 @@
 	import uniLoadMore from '@/uni_modules/uni-load-more/components/uni-load-more/uni-load-more.vue'
 
 	export default {
-	components: { nTransition,  LbPicker ,uniLoadMore},
- 
+	components: { nTransition,  LbPicker ,uniLoadMore}, 
 	onBackPress(options) { 
 	    // return true 表示禁止默认返回 
 		if(this.popShowing){
@@ -315,29 +270,9 @@
 		if(extra.date){
 			console.log();
 			this.defaultDate=new Date(extra.date).getTime()
-		}   
-		console.log("当前时间----------"+this.defaultDate)
-					 // this.extra=decodeURIComponent(extra) 
-		var api =getApp().globalData.API; 
-		// api.send({
-		//  url:api.URLS.serviceType,
-		// 	success:(data)=>{
-		//   this.serviceType=data.data 
-		//   this.serviceType.unshift({ "serviceType":"","selected":true,"serviceTypeCn":"全部"} ); 
-		// 	}
-		// }) 
-		
-		// api.send({
-		//  url:api.URLS.model,
-		// 	success:(data)=>{ 
-		// 	 this.aircraftModel=data.data 
-		// 	 this.aircraftModel.forEach((item ,index)=>{
-		// 		 item.label=item.specificAircraftName 
-		// 	 }) 
-		// 	}
-		// }) 
-		
-		var api=	getApp().globalData.API; 
+		}    
+		var api=	getApp().globalData.API;  
+		this.loadData() 
 		api.send({
 			url:api.URLS.company,
 			 success: (res) => { 
@@ -350,60 +285,30 @@
 						 carrierCode:item.carrierCode,
 						})
 					 }
-				 })  
-				 // console.log("过滤前"+res.data.length+"过滤后"+	this. showAirlines.length)
+				 })
+					
 				 },
-			  	error: (e) => { 
-			 
+			  	error: (e) => {  
 				}
-		}) 
+		})  
 		
-		
-	this.loadData()
-
 	},
 		data() {
-			return {
-				defaultDate:0,
+			return { 
+				directed: ['直飞'],
+				direct:  [{value: '直飞',	text: '直飞', },
+						  {value: '经停', 	text: '经停',  }  ], 
+					defaultDate:0,
 					random:"",
 			 		regioned:[ ], 
-					widthTypeCheked:[
-					 
+					widthTypeCheked:[ 
 					],
-					region: [{
-					"text": "国内",
-					"value":"国内"
-					},
-					{
-					"text": "国际",
-						"value":"国际"
-						
-					} 
+					region: [{ "text": "国内", "value":"国内" },
+							{"text": "国际", "value":"国际" } 
 				],
 				
-			widthType:  [ 
-			{
-				value: '窄',
-				text: '窄体', 
-			},
-			{
-				value: '宽',
-				text: '宽体', 
-			} 
-			 ],
-			 directed:['直飞'],
-				direct:  [
-			{
-				value: '直飞',
-				text: '直飞', 
-			},
-							  {
-							  	value: '经停',
-							  	text: '经停', 
-							  },
-							  				  
-				 ],
-				 sameCompanyChecked:['同航司中转'],
+			widthType:  [  { 	value: '宽', 	text: '宽体',  }, { value: '窄', text: '窄体'  },   ],
+			  sameCompanyChecked:['同航司中转','跨航司中转'],
 				 sameCompany:  [
 				{
 					value: '同航司中转',
@@ -422,8 +327,7 @@
 			allAirlineCompany:[],
 			extra:{},
 			 index:0,
-			 showAirlines:showAirlinesJson,//航空公司
-			 popHeight:800, 
+			 showAirlines:showAirlinesJson,//航空公司 
 			 fast:true, //
 			aircraftModel:[],//飞机型号
 			timeslot:timeslotJson, //时间段
@@ -446,7 +350,20 @@
 		},	
 		
 
-		methods: {     
+		methods: {   
+		  
+			diffTime(item){
+				var days= Number(item.localArrDay)
+					  if(!days&&days!=0){
+						  days=-1
+					  }  
+			var oneday=24*60*60
+			 var	diff =oneday*days;
+			// console.log( days+"时间差"+diff)  
+				// console.log(   JSON.stringify(item )) 
+			// console.log(  days+"时间差"+diff+"前"+	item.localArrTimesStamp+"后来"+item.localArrTimesStamp+diff) 
+			return diff;
+			},
 			  isChinese(source){
 				var regex = /^[\u4E00-\u9FA5]+$/;
 				return regex.test(source);
@@ -559,14 +476,27 @@
 						 page: this.pageIndex,  
 						limit:this.pageSize
 					}    
-			 //直飞
-			if(this.directed.indexOf('直飞')>=0){
-				 optData.direct=1
-			}
-			//同航司
-			if(this.sameCompanyChecked.indexOf('同航司中转') >=0){
-				 optData.sameCarrier=1
-			}
+			 //直飞 
+			 if(this.directed.length>0){
+				 	 optData.noOfStops=[]
+					 if(this.directed.indexOf('直飞') >=0){
+					 	 optData.noOfStops.push(1)
+					 }
+					 if(this.directed.indexOf('经停') >=0){
+					 	 optData.noOfStops.push(2)
+					 }
+			 }
+			 if(this.sameCompanyChecked.length>0){
+			  	 optData.sameCarrier=[]
+			 					 if(this.sameCompanyChecked.indexOf('同航司中转') >=0){
+			 					 	 optData.sameCarrier.push(1)
+			 					 }
+			 					 if(this.sameCompanyChecked.indexOf('跨航司中转') >=0){
+			 					 	 optData.sameCarrier.push(2)
+			 					 }
+			 }
+ 
+			 
 		// equipmentGroup :"JW",//机型类别 JW 宽体，JN窄体
 		var wh=[]
 		if(this.widthTypeCheked.indexOf('宽') >=0){
@@ -625,8 +555,17 @@
 							if(	nowDay!=this.extra.date ){
 								console.log("数据与当前所选不一致进行舍弃数据")
 								return
-							}
-							
+							} 
+							 
+					 if( data&&!data.data&&this.pageIndex==1){
+						uni.showModal({
+						    title: '数据加载失败',
+						    content:data.msg, 
+							showCancel:false,
+							cancelText:"知道了",  
+						});  
+							this.status='contentnomore'
+						} 
 							var data=	data.data; 
 							if(data.length<this.pageSize){ 
 								this.status='contentnomore'
@@ -636,8 +575,7 @@
 							}   
 						 this.processingData(data )
 						},error:(data)=>{ 
-							this.status='contentnomore'
-					
+							this.status='contentnomore' 
 							if(this.pageIndex==1){
 							uni.hideLoading()
 							uni.stopPullDownRefresh() 

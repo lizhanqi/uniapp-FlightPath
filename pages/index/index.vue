@@ -58,8 +58,7 @@
 		   	  		 ></input-autocomplete>
 		   	  		 <checkbox>排除</checkbox>
 		   	  	</view> 
-				<image src="../../static/add.png" style="width: 50px; height: 50px;"></image>
-				 
+		 		 
  		</view>
 
 </uni-card>     
